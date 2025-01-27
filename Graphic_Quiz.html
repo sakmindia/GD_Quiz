@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphic Design Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            
+            <h1 class="text-2xl font-bold text-center mb-4">Next Academy For IT Education</h1>
+            <h1 class="text-2xl font-bold text-center mb-4">Graphic Design Quiz</h1>
+            
+            <form id="quizForm">
+                <div class="mb-4">
+                    <label for="studentName" class="block text-lg font-semibold mb-2">Your Name</label>
+                    <input type="text" id="studentName" name="studentName" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Enter your name" required>
+                </div>
+
+                <div id="questionsContainer" class="space-y-6">
+                    <!-- Questions will be dynamically injected here -->
+                </div>
+
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4 w-full hover:bg-blue-600">Submit</button>
+            </form>
+        </div>
+
+        <div id="resultContainer" class="hidden bg-white shadow-lg rounded-lg p-6 mt-6">
+            <h2 class="text-xl font-bold text-center mb-4">Quiz Results</h2>
+            <p class="text-lg font-semibold">Student Name: <span id="studentNameDisplay"></span></p>
+            <p class="text-lg font-semibold">Score: <span id="scoreDisplay"></span></p>
+            <div id="answerReview" class="mt-4 space-y-4">
+                <!-- Question review will be dynamically injected here -->
+            </div>
+            <button onclick="restartQuiz()" class="bg-green-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-green-600">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+         const questions = [
+            {
+                question: "What is the shortcut for duplicating a layer in Photoshop?",
+                options: ["Ctrl + J", "Ctrl + D", "Ctrl + Shift + L", "Alt + L"],
+                correct: 0
+            },
+            {
+                question: "Which tool is used to draw freehand shapes in Illustrator?",
+                options: ["Pen Tool", "Pencil Tool", "Brush Tool", "Shape Tool"],
+                correct: 1
+            },
+            {
+                question: "What file format is used for vector graphics?",
+                options: ["PNG", "SVG", "JPEG", "GIF"],
+                correct: 1
+            },
+            {
+                question: "Which key is used to constrain proportions while resizing in Photoshop?",
+                options: ["Alt", "Shift", "Ctrl", "Spacebar"],
+                correct: 1
+            },
+            {
+                question: "What is the default color mode in CorelDRAW?",
+                options: ["CMYK", "RGB", "Grayscale", "Lab"],
+                correct: 0
+            },
+            {
+                question: "Which tool in Illustrator is used to combine multiple shapes?",
+                options: ["Shape Builder Tool", "Selection Tool", "Eraser Tool", "Type Tool"],
+                correct: 0
+            },
+            {
+                question: "What is the standard resolution for print design?",
+                options: ["72 DPI", "150 DPI", "300 DPI", "600 DPI"],
+                correct: 2
+            },
+            {
+                question: "What is the shortcut for exporting in CorelDRAW?",
+                options: ["Ctrl + E", "Ctrl + X", "Ctrl + P", "Ctrl + Shift + S"],
+                correct: 0
+            },
+            {
+                question: "Which Photoshop tool is used to remove blemishes?",
+                options: ["Clone Stamp Tool", "Spot Healing Brush Tool", "Eraser Tool", "Blur Tool"],
+                correct: 1
+            },
+            {
+                question: "Which feature in Illustrator allows you to align objects?",
+                options: ["Align Panel", "Pathfinder", "Transform Panel", "Appearance Panel"],
+                correct: 0
+            },
+            {
+                question: "What is the shortcut for the Pen Tool in Photoshop?",
+                options: ["P", "B", "T", "C"],
+                correct: 0
+            },
+            {
+                question: "Which format supports transparency?",
+                options: ["JPG", "GIF", "TIFF", "PNG"],
+                correct: 3
+            },
+            {
+                question: "What is the use of the Eyedropper Tool?",
+                options: ["To select colors", "To erase parts of an image", "To add gradients", "To draw shapes"],
+                correct: 0
+            },
+            {
+                question: "What is the shortcut for creating a new document in Illustrator?",
+                options: ["Ctrl + N", "Ctrl + D", "Ctrl + O", "Ctrl + T"],
+                correct: 0
+            },
+            {
+                question: "What is the primary use of the Pathfinder panel in Illustrator?",
+                options: ["To align objects", "To combine and divide objects", "To create text", "To resize objects"],
+                correct: 1
+            },
+            {
+                question: "Which tool allows you to warp text in Photoshop?",
+                options: ["Type Tool", "Transform Tool", "Warp Text Tool", "Shape Tool"],
+                correct: 2
+            },
+            {
+                question: "What is the shortcut to undo an action in CorelDRAW?",
+                options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + Shift + Z", "Ctrl + U"],
+                correct: 0
+            },
+            {
+                question: "Which format is best for high-quality print graphics?",
+                options: ["JPG", "PDF", "GIF", "BMP"],
+                correct: 1
+            },
+            {
+                question: "Which tool in CorelDRAW lets you create curves?",
+                options: ["Pen Tool", "Bézier Tool", "Freehand Tool", "Shape Tool"],
+                correct: 1
+            },
+            {
+                question: "Which feature in Photoshop lets you adjust image brightness and contrast?",
+                options: ["Filters", "Adjustments", "Layers", "Properties"],
+                correct: 1
+            },
+            {
+                question: "What is the shortcut for saving a file in Illustrator?",
+                options: ["Ctrl + S", "Ctrl + Shift + S", "Ctrl + Alt + S", "Ctrl + P"],
+                correct: 0
+            },
+            {
+                question: "Which CorelDRAW tool lets you add artistic effects?",
+                options: ["Artistic Media Tool", "Shape Tool", "Eraser Tool", "Crop Tool"],
+                correct: 0
+            },
+            {
+                question: "What is the shortcut for Free Transform in Photoshop?",
+                options: ["Ctrl + T", "Ctrl + F", "Ctrl + G", "Ctrl + E"],
+                correct: 0
+            },
+            {
+                question: "Which Illustrator feature allows you to create patterns?",
+                options: ["Appearance Panel", "Pattern Options", "Brushes Panel", "Gradient Panel"],
+                correct: 1
+            },
+            {
+                question: "What is the shortcut for duplicating objects in CorelDRAW?",
+                options: ["Ctrl + D", "Ctrl + Alt + D", "Ctrl + Shift + D", "Ctrl + T"],
+                correct: 0
+            },
+            {
+                question: "Which color mode is ideal for web graphics?",
+                options: ["CMYK", "RGB", "Grayscale", "Lab"],
+                correct: 1
+            },
+            {
+                question: "What is the shortcut for creating a new layer in Photoshop?",
+                options: ["Ctrl + Shift + N", "Ctrl + Alt + N", "Ctrl + N", "Ctrl + L"],
+                correct: 0
+            },
+            {
+                question: "Which tool in CorelDRAW allows you to create gradients?",
+                options: ["Fountain Fill", "Shape Tool", "Freehand Tool", "Blend Tool"],
+                correct: 0
+            },
+            {
+                question: "Which panel in Illustrator is used for managing colors?",
+                options: ["Swatches", "Layers", "Pathfinder", "Appearance"],
+                correct: 0
+            },
+            {
+                question: "What is the shortcut to group objects in Photoshop?",
+                options: ["Ctrl + G", "Ctrl + E", "Ctrl + Shift + G", "Ctrl + T"],
+                correct: 0
+            },
+            {
+                question: "Which feature in CorelDRAW aligns and distributes objects?",
+                options: ["Align and Distribute", "Object Manager", "Shape Tool", "Text Properties"],
+                correct: 0
+            },
+            {
+                question: "What is the shortcut for the Brush Tool in Photoshop?",
+                options: ["B", "P", "T", "E"],
+                correct: 0
+            },
+            {
+                question: "Which CorelDRAW tool allows you to crop objects?",
+                options: ["Crop Tool", "Pick Tool", "Knife Tool", "Eraser Tool"],
+                correct: 0
+            },
+            {
+                question: "Which panel in Photoshop lets you apply layer styles?",
+                options: ["Layers Panel", "Styles Panel", "Properties Panel", "Actions Panel"],
+                correct: 1
+            },
+            {
+                question: "What is the shortcut to toggle rulers in Illustrator?",
+                options: ["Ctrl + R", "Ctrl + Alt + R", "Ctrl + Shift + R", "Ctrl + L"],
+                correct: 0
+            },
+            {
+                question: "What is the purpose of the Pen Tool in Photoshop?",
+                options: ["To create vector paths", "To select objects", "To erase parts of an image", "To crop images"],
+                correct: 0
+            },
+            {
+                question: "Which format is best for scalable graphics?",
+                options: ["SVG", "JPG", "GIF", "TIFF"],
+                correct: 0
+            },
+            {
+                question: "Which CorelDRAW feature allows you to fit text to a path?",
+                options: ["Text on Path", "Text Wrap", "Text Flow", "Text Fitting"],
+                correct: 0
+            },
+            {
+                question: "What is the shortcut for the Eraser Tool in Photoshop?",
+                options: ["E", "B", "P", "T"],
+                correct: 0
+            },
+            {
+                question: "Which Illustrator tool is used for creating gradients?",
+                options: ["Gradient Tool", "Brush Tool", "Pencil Tool", "Shape Builder Tool"],
+                correct: 0
+            }
+        ];
+
+        const quizForm = document.getElementById('quizForm');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const studentNameDisplay = document.getElementById('studentNameDisplay');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const answerReview = document.getElementById('answerReview');
+
+        function loadQuestions() {
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('mb-4');
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-2">${index + 1}. ${q.question}</p>
+                    ${q.options.map((option, i) => `
+                        <label class="block mb-1">
+                            <input type="radio" name="question${index}" value="${i}" required>
+                            ${option}
+                        </label>
+                    `).join('')}
+                `;
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        quizForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(quizForm);
+            const studentName = formData.get('studentName');
+            let score = 0;
+            const review = [];
+
+            questions.forEach((q, index) => {
+                const answer = formData.get(`question${index}`);
+                const isCorrect = parseInt(answer) === q.correct;
+                if (isCorrect) score++;
+                review.push({
+                    question: q.question,
+                    correctAnswer: q.options[q.correct],
+                    studentAnswer: q.options[answer] || "Not Answered",
+                    isCorrect
+                });
+            });
+
+            studentNameDisplay.textContent = studentName;
+            scoreDisplay.textContent = `${score} / ${questions.length}`;
+
+            answerReview.innerHTML = review.map(r => `
+                <div class="p-4 border rounded-lg ${r.isCorrect ? 'bg-green-100' : 'bg-red-100'}">
+                    <p class="font-semibold">${r.question}</p>
+                    <p>Correct Answer: ${r.correctAnswer}</p>
+                    <p>Your Answer: ${r.studentAnswer}</p>
+                </div>
+            `).join('');
+
+            quizForm.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+        });
+
+        function restartQuiz() {
+            quizForm.reset();
+            questionsContainer.innerHTML = '';
+            loadQuestions();
+            quizForm.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+        }
+
+        loadQuestions();
+    </script>
+</body>
+</html>
